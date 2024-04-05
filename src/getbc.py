@@ -42,22 +42,23 @@ except:
 def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                         description=
-                        "This program's primary purpose is to install bomcheckgui to your local PC, "
-                        "though it can also be used to activate bomcheckgui's virtual "
-                        "environment, view getbc's help file, etc.  To install "
+                        "This program's primary purpose is to install bomcheckgui "
+                        "to your local PC, though it can also be used to activate "
+                        "bomcheckgui's virtual environment, upgrade to the latest "
+                        "version of bomcheckgui, etc.  To install "
                         "bomcheckgui do: py " + fileName +  ".py --install."
                         " (without the period).  Note that before any of getbc's "
                         'commands makes any changes to your computer, '
                         'an explanation will be given about what it is about '
                         'to occur, and then pause and ask for your confirmation '
                         'before proceeding.')
+    parser.add_argument('-mh', '--morehelp', action='store_true', default=False,
+                        help="More help about using getbc"),
     parser.add_argument('-a', '--about', action='version',
                         version="Author: " + __author__ +
                         ".  Initial creation: Mar 7, 2024.  "
                         + fileName + "'s version no.: " + __version__,
                         help="Show author, creation date, and version, then exit"),
-    parser.add_argument('-mh', '--morehelp', action='store_true', default=False,
-                        help="More help about using getbc"),
     parser.add_argument('-c', '--copy', action='store_true', default=False,
                         help = 'copy to clipboard: ' + str(activate)),
     parser.add_argument('--install', action='store_true', default=False,
