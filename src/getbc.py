@@ -102,6 +102,7 @@ def getbc(dic, bypasswintest=False):
 
 
 def morehelp():
+    print('Opening browser to show help located on the web...')
     version = 'master'
     bomcheck_help = ('https://htmlpreview.github.io/?https://github.com/'
              'kcarlton55/getbc/blob/' + version + '/help_files/getbc_help.html')
