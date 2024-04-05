@@ -11,7 +11,7 @@ this program to work you must have a python interpreter prorgram loaded on your
 computer.  E.g. https://www.python.org/.
 
 To run this script, open a MS cmd prompt window in the directory where getbc.py
-resides and enter this command (py = python):
+resides and enter this command:
 
     py getbc.py
 """
@@ -42,21 +42,22 @@ except:
 def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                         description=
-                        "This program's primary purpose is to install bomcheckgui, "
+                        "This program's primary purpose is to install bomcheckgui to your local PC, "
                         "though it can also be used to activate bomcheckgui's virtual "
-                        "environment, view bomcheck's help files, etc.  To install "
+                        "environment, view getbc's help file, etc.  To install "
                         "bomcheckgui do: py " + fileName +  ".py --install."
-                        ' (without the period).  Note that before any of these '
-                        'actions adds or removes any files to your computer, the '
-                        'program will explain what it is about to do, and then will '
-                        'pause and ask for your confirmation.')
+                        " (without the period).  Note that before any of getbc's "
+                        'commands makes any changes to your computer, '
+                        'an explanation will be given about what it is about '
+                        'to occur, and then pause and ask for your confirmation '
+                        'before proceeding.')
     parser.add_argument('-a', '--about', action='version',
                         version="Author: " + __author__ +
                         ".  Initial creation: Mar 7, 2024.  "
                         + fileName + "'s version no.: " + __version__,
                         help="Show author, creation date, and version, then exit"),
-    parser.add_argument('--bomcheckhelp', action='store_true', default=False,
-                        help="Open a webpage showing bomcheck's help files"),
+    parser.add_argument('-mh', '--morehelp', action='store_true', default=False,
+                        help="More help about using getbc"),
     parser.add_argument('-c', '--copy', action='store_true', default=False,
                         help = 'copy to clipboard: ' + str(activate)),
     parser.add_argument('--install', action='store_true', default=False,
@@ -87,8 +88,8 @@ def getbc(dic, bypasswintest=False):
     if not sys.platform == 'win32' and not bypasswintest==True:
         print('Sorry.  This program currenly works only on a MS Windows OS.')
         return
-    elif dic.get('bomcheckhelp', False):
-        bomcheckhelp()
+    elif dic.get('morehelp', False):
+        morehelp()
     elif dic.get('copy', False):
         copy()
     elif dic.get('install', False):
@@ -99,10 +100,10 @@ def getbc(dic, bypasswintest=False):
         upgrade()
 
 
-def bomcheckhelp():
+def morehelp():
     version = 'master'
     bomcheck_help = ('https://htmlpreview.github.io/?https://github.com/'
-             'kcarlton55/bomcheck/blob/' + version + '/help_files/bomcheck_help.html')
+             'kcarlton55/getbc/blob/' + version + '/help_files/getbc_help.html')
     webbrowser.open(bomcheck_help)
 
 
