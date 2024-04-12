@@ -2,11 +2,20 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Mar  7 22:14:14 2024
-
 @author: Kenneth E. Carlton
 
+This script file is written in the computer language called python.  This
+script's primary purpose is to install the program called bomcheckgui onto your
+local computer.  Bomcheckgui compares side-by-side CAD BOMs to ERP BOMs.  For
+this program to work you must have a python interpreter prorgram loaded on your
+computer.  E.g. https://www.python.org/.
+
+To run this script, open a MS cmd prompt window in the directory where getbc.py
+resides and enter this command:
+
+    py getbc.py
 """
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 __author__ = 'Kenneth E. Carlton'
 
 #import pdb # use with pdb.set_trace()
@@ -24,25 +33,32 @@ except:
 def get_version():
     return __version__
 
+try:
+    fileName = Path(__file__).stem
+except:
+    fileName = 'getbc'
+
 
 def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                         description=
-                        "This program's primary purpose is to install bomcheckgui, "
-                        "though it can also be used to activate bomcheckgui's virtual "
-                        "environment, view bomcheck's help files, etc.  To install "
-                        "bomcheckgui do: " + Path(__file__).stem +  " --install."
-                        ' (without the period).  Note that before any of these '
-                        'actions adds or removes any files to your computer, the '
-                        'program will explain what it is about to do, and then will '
-                        'pause and ask for your confirmation.')
+                        "This program's primary purpose is to install bomcheckgui "
+                        "to your local PC, though it can also be used to activate "
+                        "bomcheckgui's virtual environment, upgrade to the latest "
+                        "version of bomcheckgui, etc.  To install "
+                        "bomcheckgui do: py " + fileName +  ".py --install."
+                        " (without the period).  Note that before any of getbc's "
+                        'commands makes any changes to your computer, '
+                        'an explanation will be given about what it is about '
+                        'to occur, and then pause and ask for your confirmation '
+                        'before proceeding.')
+    parser.add_argument('-mh', '--morehelp', action='store_true', default=False,
+                        help="More help about using getbc"),
     parser.add_argument('-a', '--about', action='version',
                         version="Author: " + __author__ +
                         ".  Initial creation: Mar 7, 2024.  "
-                        + Path(__file__).stem + ' version: ' + __version__,
+                        + fileName + "'s version no.: " + __version__,
                         help="Show author, creation date, and version, then exit"),
-    parser.add_argument('--bomcheckhelp', action='store_true', default=False,
-                        help="Open a webpage showing bomcheck's help files"),
     parser.add_argument('-c', '--copy', action='store_true', default=False,
                         help = 'copy to clipboard: ' + str(activate)),
     parser.add_argument('--install', action='store_true', default=False,
@@ -58,7 +74,7 @@ def main():
                         'show the latest available software versions.  Upgrade '
                         'to newer versions if newer versions are availabe.'),
     parser.add_argument('-v', '--version', action='version', version=__version__,
-                        help="Show " + Path(__file__).stem + "'s version number and exit")
+                        help="Show " + fileName + "'s version number and exit")
 
     if len(sys.argv)==1:
         parser.print_help(sys.stderr)
@@ -68,13 +84,13 @@ def main():
     getbc(vars(args))  # vars() method returns the __dict__ attribute of args
 
 
-def getbc(dic):
+def getbc(dic, bypasswintest=False):
     ''' central hub that calls functions '''
-    if not sys.platform == 'win32':
-        print('Sorry.  This program currenly works only on a MS Windows OS.')
+    if not sys.platform == 'win32' and not bypasswintest==True:
+        print('Sorry.  This program currently works only on a MS Windows OS.')
         return
-    elif dic.get('bomcheckhelp', False):
-        bomcheckhelp()
+    elif dic.get('morehelp', False):
+        morehelp()
     elif dic.get('copy', False):
         copy()
     elif dic.get('install', False):
@@ -85,17 +101,18 @@ def getbc(dic):
         upgrade()
 
 
-def bomcheckhelp():
+def morehelp():
+    print('Opening browser to show help located on the web...')
     version = 'master'
     bomcheck_help = ('https://htmlpreview.github.io/?https://github.com/'
-             'kcarlton55/bomcheck/blob/' + version + '/help_files/bomcheck_help.html')
+             'kcarlton55/getbc/blob/' + version + '/help_files/getbc_help.html')
     webbrowser.open(bomcheck_help)
 
 
 def copy():
     if not Path.exists(activate):
         print('\nA virtual environment is not yet set up.  To set one up enter:\n\n' +
-              Path(__file__).stem + ' --install')
+              fileName + ' --install')
         return
     try:
         cb.setText(str(activate), mode=cb.Clipboard)
@@ -157,7 +174,7 @@ def install():
             if Path.exists(Path(linkto)):
                 print('\nA link has been added to your desktop to run bomcheckgui\n')
             print('If you would like to run bomcheck or bomcheckgui from the cmd console')
-            print('do: ' + Path(__file__).stem + ' -c')
+            print('do: ' + fileName + ' -c')
     else:
         print('Virtual directory and/or desktop link already exists.  No action will be taken.')
 
@@ -175,10 +192,10 @@ def uninstall():
 
           '1) Delete the desktop link to bomcheckgui.exe\n'
           '2) Delete the folder named bc-venv and all its contents.  This will delete\n'
-          "   bomcheckgui's virtual environment.\n\n"
+          "   bomcheckgui, bomcheck, and their virtual environment named bc-venv.\n\n"
 
           'If any of these commands does not succeed due to non-existant paths, etc., an\n'
-          'error message that you can ignore will show\n')
+          'error message that you can ignore will show.\n')
 
 
     x = input('Execute commands (can take about a minute). Continue? (Y/N) ')
@@ -193,9 +210,9 @@ def upgrade():
     ''' Upgrade getbc, bomcheck, and bomcheckgui to the latest versions.
     '''
     # dictionary of commands and explanaton of those commands.
-    dic = {'getbc':  ['py -m pip install --upgrade ' + Path(__file__).stem,
-                     'Upgrade ' + Path(__file__).stem + ' to the latest version.\n'
-                     '(' + Path(__file__).stem + 'is located in the base environment.)'],
+    dic = {'getbc':  ['py -m pip install --upgrade ' + fileName,
+                     'Upgrade ' + fileName + ' to the latest version.\n'
+                     '(' + fileName + 'is located in the base environment.)'],
            'activt': [str(activate),
                      'Active the virtual environment where bomcheck and bomcheckgui \n'
                      '   are stored (i.e., at ' + str(venvpathname) + ').'],
@@ -212,9 +229,9 @@ def upgrade():
     local_bcgui = local('bomcheckgui')
 
     print()
-    print(('Latest version of ' + Path(__file__).stem + ': ' +
+    print(('Latest version of ' + fileName + ': ' +
            '.'.join([str(i) for i in latest_getbc]))    if latest_getbc else '')
-    print(('Local version of ' + Path(__file__).stem + ': ' +
+    print(('Local version of ' + fileName + ': ' +
            '.'.join([str(i) for i in local_getbc]))     if local_getbc else '')
     print(('Latest version of bomcheck: ' +
            '.'.join([str(i) for i in latest_bc]))       if latest_bc else '')
@@ -228,9 +245,7 @@ def upgrade():
     # Collect commands that need executed, and their help info
     cmdlist = []
     infolist = []
-    if latest_getbc > local_getbc:
-        cmdlist.append(dic['getbc'][0])
-        infolist.append(dic['getbc'][1])
+
     if (latest_bc > local_bc) or (latest_bcgui > local_bcgui):
         cmdlist.append(dic['activt'][0])
         infolist.append(dic['activt'][1])
@@ -254,7 +269,9 @@ def upgrade():
             i += 1
             print(str(i) + ') ' + info)
     else:
-        print('\nEverything is up-to-date.')
+        print("\nbomcheckgui and/or bomcheck is up-to-date. No action will be taken.")
+        if latest_getbc > local_getbc:
+            print('This program is not designed to update getbc')
         return
 
     print()
@@ -285,7 +302,7 @@ def local(package):
         package = Path.joinpath(venvpathname, 'lib', 'site-packages', 'bomcheck.py')
     elif package == 'bomcheckgui':
         package = Path.joinpath(venvpathname, 'lib', 'site-packages', 'bomcheckgui.py')
-    elif package == Path(__file__).stem:
+    elif package == fileName:
         return [int(i) for i in __version__.split('.')]
     else:
         print('Bad argument given to function "local"')
