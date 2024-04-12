@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>appendix - commands that getbc employs</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+
+
+<body>
+  <div class="container">
+
+    <h1 id="top">appendix - commands that getbc employs</h1>
+    <ul>
+      <li><a href="#venv">py -m venv C:\Users\John\bc-venv</a></li>
+      <li><a href="#activate">C:\Users\John\bc-venv\Scripts\activate.bat</a></li>
+      <li><a href="#pipupgrade">py -m pip install --upgrade pip</a></li>
+      <li><a href="#installbc">py -m pip install bomcheckgui</a></li>
+      <li><a href="#mklink">mklink /h  C:\Users\John\Desktop\bomcheckgui.exe&nbsp;  C:\Users\John\bc-venv\Scripts\bomcheckgui.exe</a></li>
+      <li><a href="#upgrade">py -m pip install --upgrade bomcheckgui</a></li>
+      <li><a href="#delbc">del C:\Users\John\Desktop\bomcheckgui.exe</a></li>
+      <li><a href="#rmdir">rmdir C:\Users\John\bc-venv /s /q</a></li>
+    </ul>
+
+    <p>Commands on this sheet are examples only.&nbsp;  They are command line interface (cli)
+      commands.&nbsp;  They will not work on your computer due to the path to your home 
+      directory being different.</p>
+	
+	
+    <h5 id="venv">py -m venv C:\Users\John\bc-venv</h5>
+	  <p>(py = python).&nbsp;  This command runs python and takes as arguments '-m venv',
+	  then 'C:\Users\John\bc-venv'.&nbsp;  The '-m' means 'module'.&nbsp;  Venv following
+	  the -m means that a module, i.e. a python script, named venv will be
+	  executed.&nbsp; Venv came included when you installed python on your system.&nbsp;  The 
+	  venv module is designed to create a virtual environment;
+	  that is, a separate, safe folder where your python scripts can be stored.&nbsp;
+      Venv takes at its argument 'C:\Users\John\bc-venv'.&nbsp;
+	  'C:\Users\John\bc-venv' is the new folder that will be created.</p>
+	  
+	  Reference: <a href="https://docs.python.org/3/library/venv.html"
+                    target="_blank" rel="noopener noreferrer">
+                    https://docs.python.org/3/library/venv.html</a>
+	  <pre>   </pre>
+
+    <h5 id="activate">C:\Users\John\bc-venv\Scripts\activate.bat</h5> 
+      <p>When a virtual environment is created, a subdirectory named Scripts and
+	  a file named activate.bat are automatically created.&nbsp;  By you excecuting activate.bat,
+      later on any python commands that you issue will refer to the
+      actived environment.&nbsp;  For example, any python command that you execute
+      will be sought for in the activated environment.&nbsp;  When a virtual envirnment is active, the command
+      prompt will change to look something like: <i>(bc-venv) C:\Users\John></i></p>
+      <p>'deactivate' will deactivate the environment.</p>
+	  <pre>   </pre>
+       	  
+    <h5 id="pipupgrade">py -m pip install --upgrade pip</h5>
+	  <p>(py = python).&nbsp;  Via '-m pip', python runs its pip command.&nbsp;  Pip got
+	  installed when you installed python on your machine.&nbsp;  Pip installs python
+      scripts, usually from https://pypi.org/.&nbsp;  Bomcheckgui is stored there.&nbsp;
+      Here pip takes the arguments 'install --upgrade pip'.&nbsp;  What this does
+      is tell pip to upgrade to its most recent version.&nbsp;  Upgrading pip is not always
+      necessary, but it's just good housekeeping.</p>
+	  
+	  Reference: <a href="https://pypi.org/project/pip/"
+                    target="_blank" rel="noopener noreferrer">
+                    https://pypi.org/project/pip/</a>
+	  <pre>   </pre>
+
+      
+    <h5 id="installbc">py -m pip install bomcheckgui</h5>
+ 	  <p>(py = python).  This command runs python and takes as arguments '-m pip'.&nbsp;
+	  The '-m' means 'module', and following the -m is the module that will be run, i.e. pip.&nbsp;
+      And in turn pip takes as its arguments 'install bomcheckgui'.</p>
+      
+      <p>So then, bomcheckgui is installed.&nbsp;  But bomcheckgui has many modules,
+      including bomcheck, and including another module called PyQt.&nbsp;  PyQt manages
+      displaying gui windows, drag and drop features, etc.&nbsp;  Pip handles obtaining 
+      and installing all of these dependencies.</p>
+      
+      Reference: <a href="https://pip.pypa.io/en/stable/cli/pip_install/"
+                    target="_blank" rel="noopener noreferrer">
+                    https://pip.pypa.io/en/stable/cli/pip_install/</a>
+	  <pre>   </pre>
+    
+  
+     <h5 id="mklink">mklink /h  "C:\Users\John\Desktop\bomcheckgui.exe"  "C:\Users\John\bc-venv\Scripts\bomcheckgui.exe"</h5>    
+       <p>Unlike other commands, this is not a python command.&nbsp;  It is a Microsoft
+       command.&nbsp;  This command creates a link to the bomcheckgui program on your
+       desktop.&nbsp;  Mklink means ‘make link’.&nbsp;  The syntax is mklink /h [link] [target].&nbsp;
+       The /h means that a hard link will be created instead of symbolic link.&nbsp;  
+       (Creating a symbolic link requires administrative privileges.&nbsp;  It’s better to 
+       avoid this.)  The name of the link that will be created is
+       "C:\Users\John\Desktop\bomcheckgui.exe”.&nbsp;  The source for the link is
+       "C:\Users\John\bc-venv\Scripts\bomcheckgui.exe".<p>
+
+       <p>Note that you would ordinarily have to make bomcheckgui’s virtual environment
+       active before you could execute bomcheckgui.&nbsp;  But the link will cause
+       bomcheckgui to execute directly from its virtual environment and so it is not
+       necessary to activate it.&nbsp;  Any resources that bomcheckgui needs will be
+       pulled from where it is executed.&nbsp;  Therefore it is not necessary to make
+           bomcheckgui’s virtual environment active.</p>
+    
+       Reference: <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/mklink"
+                    target="_blank" rel="noopener noreferrer">
+                    https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/mklink/</a>
+	   <pre>   </pre>
+
+      
+     <h5 id="upgrade">py -m pip install --upgrade bomcheckgui</h5>    
+       <p>(py = python).&nbsp;  This will upgrade bomcheckgui if a later version of 
+       bomcheckgui is found at bomcheckgui’s home at https://pyip.org.&nbsp;  This 
+       is similar to upgrading pip as discussed above.&nbsp;  If you run this command
+       and a later version is not available, you will get messages saying 
+       “already satisfied”.<p>
+       <pre>   </pre>
+      
+    <h5 id="delbc">del C:\Users\John\Desktop\bomcheckgui.exe</h5>
+      <p>Delete the link to bomcheckgui that is on the Desktop.</p>
+      <pre>   </pre>
+ 
+
+    <h5 id="rmdir">rmdir C:\Users\John\bc-venv /s /q</h5>
+      <p>This is a Microsoft command, not a python command.&nbsp;  It will remove the
+         bomcheckgui’s virtual environment.&nbsp; This is done by removing the directory
+         bc-venv and all its contents including bomcheckgui.&nbsp;  Rmdir means remove 
+         directory.&nbsp;  The /s switch allows the directory to be removed even if
+         there are files within the directory.&nbsp;  The /q switch means ‘quiet’; i.e.
+         don’t prompt for confirmation before deleting files.</p>
+
+         Reference: <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/rmdir"
+                    target="_blank" rel="noopener noreferrer">
+                    https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/rmdir</a>
+	   <pre>   </pre>
+      
+      
+   
+
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+    integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh51eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+    integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

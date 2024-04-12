@@ -87,7 +87,7 @@ def main():
 def getbc(dic, bypasswintest=False):
     ''' central hub that calls functions '''
     if not sys.platform == 'win32' and not bypasswintest==True:
-        print('Sorry.  This program currenly works only on a MS Windows OS.')
+        print('Sorry.  This program currently works only on a MS Windows OS.')
         return
     elif dic.get('morehelp', False):
         morehelp()
