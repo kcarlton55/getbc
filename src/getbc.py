@@ -15,7 +15,7 @@ resides and enter this command:
 
     py getbc.py
 """
-__version__ = '0.2.0'
+__version__ = '0.3.0'
 __author__ = 'Kenneth E. Carlton'
 
 #import pdb # use with pdb.set_trace()
@@ -84,12 +84,14 @@ def main():
     getbc(vars(args))  # vars() method returns the __dict__ attribute of args
 
 
-def getbc(dic, bypasswintest=False):
+def getbc(dic):
     ''' central hub that calls functions '''
-    if not sys.platform == 'win32' and not bypasswintest==True:
-        print('Sorry.  This program currently works only on a MS Windows OS.')
-        return
-    elif dic.get('morehelp', False):
+    global flag
+    if not sys.platform == 'win32':
+        flag = False
+        print("This program works only on a MS Windows' OS, and with a regular type of python\n"
+              'installation instead of, for example, a python installation like Anaconda\n\n')
+    if dic.get('morehelp', False):
         morehelp()
     elif dic.get('copy', False):
         copy()
@@ -160,7 +162,7 @@ def install():
           '5)  Create a link to bomcheckgui on your deskop.\n'
         )
 
-    if not Path.exists(venvpathname) and not Path.exists(Path(linkto)):
+    if not Path.exists(venvpathname) and not Path.exists(Path(linkto)) and flag:
         x = input('Execute commands (takes a couple of minutes). Continue? (Y/N) ')
         if x.lower().strip()[0] == 'y':
             print('working...')
@@ -175,6 +177,8 @@ def install():
                 print('\nA link has been added to your desktop to run bomcheckgui\n')
             print('If you would like to run bomcheck or bomcheckgui from the cmd console')
             print('do: ' + fileName + ' -c')
+    elif not flag:
+        print('You are not running a MS OS.  No action will be taken')
     else:
         print('Virtual directory and/or desktop link already exists.  No action will be taken.')
 
@@ -197,13 +201,15 @@ def uninstall():
           'If any of these commands does not succeed due to non-existant paths, etc., an\n'
           'error message that you can ignore will show.\n')
 
-
-    x = input('Execute commands (can take about a minute). Continue? (Y/N) ')
-    print()
-    if x.lower().strip()[0] == 'y':
-        print('working...')
-        os.system(delete_dektop_bomcheckgui)
-        os.system(delete_bc_venv)
+    if flag:
+        x = input('Execute commands (can take about a minute). Continue? (Y/N) ')
+        print()
+        if x.lower().strip()[0] == 'y':
+            print('working...')
+            os.system(delete_dektop_bomcheckgui)
+            os.system(delete_bc_venv)
+    else:
+        print('You are not running a MS OS.  No action will be taken.')
 
 
 def upgrade():
@@ -275,11 +281,14 @@ def upgrade():
         return
 
     print()
-    x = input('Execute commands (takes a couple of minutes). Continue? (Y/N) ')
-    if x.lower().strip()[0] == 'y':
-        print('working...')
-        commands = ' && '.join(cmdlist) + ' && echo commands executed successfully'
-        os.system(commands)
+    if flag:
+        x = input('Execute commands (takes a couple of minutes). Continue? (Y/N) ')
+        if x.lower().strip()[0] == 'y':
+            print('working...')
+            commands = ' && '.join(cmdlist) + ' && echo commands executed successfully'
+            os.system(commands)
+        else:
+            print('You are not running a MS OS.  No action will be taken.')
 
 
 def local(package):
@@ -381,11 +390,9 @@ except:
 venvname = 'bc-venv'
 venvpathname = Path.joinpath(Path.home(), venvname)
 activate = Path.joinpath(Path.home(), venvname, 'Scripts', 'activate.bat')
-#desktop = Path('~/Desktop/')
-#linkto =   Path.joinpath(desktop.expanduser(), 'bomcheckgui.exe')
 linkto = os.path.join(findDesktop(), 'bomcheckgui.exe')
 linkfrom = Path.joinpath(Path.home(), venvname, 'Scripts', 'bomcheckgui.exe')
-
+flag = True
 
 
 if __name__=='__main__':
