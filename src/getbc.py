@@ -15,7 +15,7 @@ resides and enter this command:
 
     py getbc.py
 """
-__version__ = '0.3.0'
+__version__ = '0.4.0'
 __author__ = 'Kenneth E. Carlton'
 
 #import pdb # use with pdb.set_trace()
@@ -176,7 +176,7 @@ def install():
             if Path.exists(Path(linkto)):
                 print('\nA link has been added to your desktop to run bomcheckgui\n')
             print('If you would like to run bomcheck or bomcheckgui from the cmd console')
-            print('do: ' + fileName + ' -c')
+            print('do: py ' + fileName + '.py -c')
     elif not flag:
         print('You are not running a MS OS.  No action will be taken')
     else:
@@ -188,15 +188,22 @@ def uninstall():
     '''
     delete_bc_venv= 'rmdir ' + str(venvpathname) + ' /s /q'
     delete_dektop_bomcheckgui = 'del "' + str(linkto) + '"'
+    local_app_folder = os.getenv('LOCALAPPDATA')
+    config_folder = os.path.join(local_app_folder, 'bomcheck')
+    delete_config_folder = 'rmdir ' + str(config_folder) + ' /s /q'
+
     print('\nYou are about to uninstall bomcheck, bomcheckgui, their virtual environment,\n'
           'and the bomcheckgui link from your desktop.\n\n'
 
           '1) ' + delete_dektop_bomcheckgui + '\n'
-          '2) ' + delete_bc_venv + '\n\n'
+          '2) ' + delete_bc_venv + '\n'
+          '3) ' + delete_config_folder + '\n\n'
 
           '1) Delete the desktop link to bomcheckgui.exe\n'
           '2) Delete the folder named bc-venv and all its contents.  This will delete\n'
-          "   bomcheckgui, bomcheck, and their virtual environment named bc-venv.\n\n"
+          "   bomcheckgui, bomcheck, and their virtual environment named bc-venv.\n"
+          '3) Delete the file named config.txt and the folder in which it resides.\n'
+          '   config.txt contains user settings genterated from bomcheckgui.\n\n'
 
           'If any of these commands does not succeed due to non-existant paths, etc., an\n'
           'error message that you can ignore will show.\n')
@@ -208,6 +215,7 @@ def uninstall():
             print('working...')
             os.system(delete_dektop_bomcheckgui)
             os.system(delete_bc_venv)
+            os.system(delete_config_folder)
     else:
         print('You are not running a MS OS.  No action will be taken.')
 
@@ -378,6 +386,13 @@ def findDesktop():
     else:
         desktopnotfound = True
         return str(Path.home())
+
+
+
+
+
+
+
 
 
 try:
