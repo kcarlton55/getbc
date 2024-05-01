@@ -239,7 +239,7 @@ def upgrade():
     local_getbc = local('getbc')
     latest_bc = latest('bomcheck')
     local_bc = local('bomcheck')
-    latest_bcgui = local('bomcheckgui')
+    latest_bcgui = latest('bomcheckgui')
     local_bcgui = local('bomcheckgui')
 
     print()
