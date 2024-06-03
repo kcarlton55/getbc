@@ -5,7 +5,7 @@
 This program's primary responsibilty is to make installing bomcheckgui
 to a person's local computer easy.  It creates a virtual environment
 for bomcheckgui and installs bomcheckgui and its dependencies there,
-and creates a desktop link to bomcheckgui.  It can also check for
+and it creates a desktop link to bomcheckgui.  It can also check for
 program upgrades and can uninstall bomcheckgui.  Note: this program
 only works on Microsoft Windows, and only works with a standard python
 installation as compared to a variation of python like the Anaconda
